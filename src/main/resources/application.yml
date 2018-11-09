@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:5003} 
+
+spring:
+  application:
+    name: blog-microservice-tag
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+    redis:
+      uri: ${REDIS_URI}
+      channel-tag: ${REDIS_CHANNEL_TAG}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 3600
+    lease-expiration-duration-in-seconds: 3600
+    hostname: localhost
+  client:
+    initial-instance-info-replication-interval-seconds: 3600
+    instance-info-replication-interval-seconds: 3600
+    registry-fetch-interval-seconds: 3600
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: https://blog-eureka-server.herokuapp.com/eureka/
