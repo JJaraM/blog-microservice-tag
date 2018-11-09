@@ -33,8 +33,13 @@ public class TagController {
 		return service.create(tag);
 	}
 	
-	@GetMapping
+	@GetMapping("/byIds")
 	public Flux<Tag> findAllById(@RequestParam final List<Long> ids) {
 		return service.findAllById(ids);
+	}
+	
+	@GetMapping("/all")
+	public Flux<Tag> findAll() {
+		return service.findAll();
 	}
 }

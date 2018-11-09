@@ -14,4 +14,5 @@ public interface TagService {
 	Mono<Tag> create(Tag tag);
 	Flux<Tag> findAllById(List<Long> tags);
 	Mono<Tag> update(Tag tag);
+	Flux<Tag> findAll();
 }

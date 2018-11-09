@@ -37,4 +37,9 @@ public class TagServiceImpl implements TagService {
 		return repository.save(tag);
 	}
 
+	@Override
+	public Flux<Tag> findAll() {
+		return repository.findAll();
+	}
+
 }
