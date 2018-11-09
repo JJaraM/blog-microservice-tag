@@ -8,7 +8,7 @@ spring:
     mongodb:
       uri: ${MONGODB_URI}
     redis:
-      uri: ${REDIS_URI}
+      uri: ${REDIS_URL}
       channel-tag: ${REDIS_CHANNEL_TAG}
 
 eureka:

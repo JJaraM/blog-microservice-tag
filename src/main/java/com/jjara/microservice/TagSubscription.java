@@ -28,12 +28,12 @@ public class TagSubscription {
 	@Autowired private TagService tagService;
 	@Autowired private ObjectMapper mapper;
 	
-	@Value("${spring.data.redis.uri}") private String uri;
+	@Value("${spring.data.redis.url}") private String url;
 	@Value("${spring.data.redis.channel-tag}") private String channelTag;
 	
 	@Bean
 	public RedisPubSubCommands<String, String> subscribe() {
-		var client = RedisClient.create(uri);
+		var client = RedisClient.create(url);
 		var con = client.connectPubSub();
 		
 		var listener = new RedisPubSubAdapter<String, String>() {
