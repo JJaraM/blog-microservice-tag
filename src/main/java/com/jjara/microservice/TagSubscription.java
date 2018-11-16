@@ -41,7 +41,9 @@ public class TagSubscription {
 				try {
 					var message = mapper.readValue(messageBody, SubscriberMessage.class);
 			    	tagService.findAllById(message.getTags()).map(tag -> {
-			    		tag.addPost(message.getPostId());
+						if (!tag.getPosts().contains(message.getPostId())) {
+			    			tag.addPost(message.getPostId());
+			    		}
 			    		return tag;
 			    	}).flatMap(tagService::update).subscribe();
 				} catch (IOException e) {
