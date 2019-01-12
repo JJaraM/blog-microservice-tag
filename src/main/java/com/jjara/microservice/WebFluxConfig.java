@@ -1,3 +1,6 @@
+/*
+ * Copyright 2018, Jonathan Jara Morales, All rights reserved.
+ */
 package com.jjara.microservice;
 
 import org.springframework.context.annotation.Bean;
@@ -5,25 +8,30 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.reactive.config.CorsRegistry;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
-import org.springframework.web.reactive.config.WebFluxConfigurerComposite;
 
+/**
+ * Web Configurations
+ */
 @Configuration
 public class WebFluxConfig {
 
-	
+	/**
+	 * CORS configuration that we need to access this microservice operations for
+	 * external applications.
+	 * 
+	 * @return an instance of cross configuration filter
+	 */
 	@Bean
 	public CorsWebFilter corsFilter() {
-		CorsConfiguration config = new CorsConfiguration();
-	    config.setAllowCredentials(true);
-	    config.addAllowedHeader("*");
-	    config.addAllowedMethod("*");
-	    config.addAllowedOrigin("*");
-	    
-	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	    source.registerCorsConfiguration("/**", config);
+		final CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		config.addAllowedOrigin("*");
 
-	    return new CorsWebFilter(source);
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+
+		return new CorsWebFilter(source);
 	}
 }

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.jjara.microservice.tag.domain.Tag;
 
+/**
+ * Mongo Tag's Repository
+ */
 @Repository
 public interface TagRepository extends ReactiveMongoRepository<Tag, Long> {
 

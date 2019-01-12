@@ -10,9 +10,39 @@ import com.jjara.microservice.tag.domain.Tag;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * List of tags operations
+ */
 public interface TagService {
-	Mono<Tag> create(Tag tag);
-	Flux<Tag> findAllById(List<Long> tags);
-	Mono<Tag> update(Tag tag);
+
+	/**
+	 * Creates a tag
+	 * 
+	 * @param tag to be created
+	 * @return an asynchronous object that contains the tag information
+	 */
+	Mono<Tag> create(final Tag tag);
+
+	/**
+	 * Finds a list of tags
+	 * 
+	 * @param tags found
+	 * @return an asynchronous object that contains the list of tags
+	 */
+	Flux<Tag> findAllById(final List<Long> tags);
+
+	/**
+	 * Updates a tag
+	 * 
+	 * @param tag to be updated
+	 * @return an asynchronous object with the tag updated
+	 */
+	Mono<Tag> update(final Tag tag);
+
+	/**
+	 * Finds all tags
+	 * 
+	 * @return an asynchronous object with all tags found
+	 */
 	Flux<Tag> findAll();
 }

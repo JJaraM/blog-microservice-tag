@@ -19,46 +19,73 @@ import io.lettuce.core.pubsub.RedisPubSubAdapter;
 import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 
 /**
- * Handle all subscriptions
- * @author jonathan
+ * Handles post subscriptions
  */
 @Configuration
 public class TagSubscription {
-	
-	@Autowired private TagService tagService;
-	@Autowired private ObjectMapper mapper;
-	
-	@Value("${spring.data.redis.url}") private String url;
-	@Value("${spring.data.redis.channel-tag}") private String channelTag;
-	
+
+	/**
+	 * Tag Service Layer
+	 */
+	@Autowired
+	private TagService tagService;
+
+	/**
+	 * Class that provides the functionality to read JSON
+	 */
+	@Autowired
+	private ObjectMapper mapper;
+
+	/**
+	 * URL used to connect to redis
+	 */
+	@Value("${spring.data.redis.url}")
+	private String url;
+
+	/**
+	 * Name of the channel
+	 */
+	@Value("${spring.data.redis.channel-tag}")
+	private String channelTag;
+
+	/**
+	 * Creates the subscription for the portfolio tag and makes an update which
+	 * corresponds in associate the tag when there is a new post
+	 * 
+	 * @return the subscription instance
+	 */
 	@Bean
 	public RedisPubSubCommands<String, String> subscribe() {
-		var client = RedisClient.create(url);
-		var con = client.connectPubSub();
-		
+		final var client = RedisClient.create(url);
+		final var connection = client.connectPubSub();
+
+		// Listener that we catch the result and will execute the task
 		var listener = new RedisPubSubAdapter<String, String>() {
-		    public void message(String channel, String messageBody) {
+			public void message(String channel, String messageBody) {
 				try {
 					var message = mapper.readValue(messageBody, SubscriberMessage.class);
-			    	tagService.findAllById(message.getTags()).map(tag -> {
+					tagService.findAllById(message.getTags()).map(tag -> {
 						if (!tag.getPosts().contains(message.getPostId())) {
-			    			tag.addPost(message.getPostId());
-			    		}
-			    		return tag;
-			    	}).flatMap(tagService::update).subscribe();
+							tag.addPost(message.getPostId());
+						}
+						return tag;
+					}).flatMap(tagService::update).subscribe();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}				
-		    }
+				}
+			}
 		};
-		con.addListener(listener);
-		var sync = con.sync();
+		connection.addListener(listener);
+		var sync = connection.sync();
 		sync.subscribe(channelTag);
 		return sync;
 	}
-	
+
+	/**
+	 * Represents the information of the message that we received from the channel
+	 */
 	public static final class SubscriberMessage {
-		
+
 		protected long postId;
 		protected List<Long> tags;
 

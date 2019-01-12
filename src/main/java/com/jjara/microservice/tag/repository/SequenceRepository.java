@@ -13,31 +13,44 @@ import org.springframework.stereotype.Repository;
 
 import com.jjara.microservice.tag.domain.Sequence;
 
+/**
+ * Mongo Repository used to create the tag's id
+ */
 @Repository
 public class SequenceRepository {
 
-	@Autowired private MongoOperations mongoOperation;
-	
+	/**
+	 * Mongo operations instance
+	 */
+	@Autowired
+	private MongoOperations mongoOperation;
+
+	/**
+	 * Name of the sequence
+	 */
 	private final String KEY = "tag";
 
+	/**
+	 * Gets the next sequence id
+	 * 
+	 * @return sequence's id
+	 */
 	public long getNextSequenceId() {
-
 		// get sequence id
-		Query query = new Query(Criteria.where("_id").is(KEY));
+		final Query query = new Query(Criteria.where("_id").is(KEY));
 
 		// increase sequence id by 1
-		Update update = new Update();
+		final Update update = new Update();
 		update.inc("seq", 1);
 
 		// return new increased id
-		FindAndModifyOptions options = new FindAndModifyOptions();
+		final FindAndModifyOptions options = new FindAndModifyOptions();
 		options.returnNew(true);
 
 		// this is the magic happened.
-		Sequence seqId = mongoOperation.findAndModify(query, update, options, Sequence.class);
+		final Sequence seqId = mongoOperation.findAndModify(query, update, options, Sequence.class);
 
 		return seqId.getSeq();
-
 	}
 
 }

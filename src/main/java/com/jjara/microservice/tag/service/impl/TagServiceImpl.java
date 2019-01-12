@@ -19,21 +19,24 @@ import reactor.core.publisher.Mono;
 @Service
 public class TagServiceImpl implements TagService {
 
-	@Autowired private TagRepository repository;
-	@Autowired private SequenceRepository sequenceRepository;
+	@Autowired
+	private TagRepository repository;
 	
-	public Mono<Tag> create(Tag tag) {
+	@Autowired
+	private SequenceRepository sequenceRepository;
+
+	public Mono<Tag> create(final Tag tag) {
 		tag.setId(sequenceRepository.getNextSequenceId());
 		return repository.save(tag);
 	}
 
 	@Override
-	public Flux<Tag> findAllById(List<Long> tags) {
+	public Flux<Tag> findAllById(final List<Long> tags) {
 		return repository.findAllById(tags);
 	}
 
 	@Override
-	public Mono<Tag> update(Tag tag) {
+	public Mono<Tag> update(final Tag tag) {
 		return repository.save(tag);
 	}
 
