@@ -4,12 +4,15 @@
 package com.jjara.microservice;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.jjara.microservice.tag.domain.Tag;
+import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +26,8 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.pubsub.RedisPubSubAdapter;
 import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import reactor.core.publisher.Mono;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Handles post subscriptions
@@ -58,6 +63,15 @@ public class TagSubscription {
 	@Value("${spring.data.redis.channel-tag-remove}")
 	private String channelTagRemove;
 
+	private RedisClient client;
+	private StatefulRedisPubSubConnection<String, String> connection;
+
+	@PostConstruct
+	public void init() {
+		client = RedisClient.create(url);
+		connection = client.connectPubSub();
+	}
+
 	/**
 	 * Creates the subscription for the portfolio tag and makes an update which
 	 * corresponds in associate the tag when there is a new post
@@ -66,11 +80,10 @@ public class TagSubscription {
 	 */
 	@Bean
 	public RedisPubSubCommands<String, String> addTag() {
-		final var client = RedisClient.create(url);
-		final BiFunction<Tag, Long, Mono<Tag>> remove = (tag, postId) -> tagService.update(tag);
 
-		var listener = new Event(remove);
-		final var connection = client.connectPubSub();
+		final BiFunction<Tag, Long, Mono<Tag>> add = (tag, postId) -> tagService.update(tag);
+
+		var listener = new Event(channelTagAdd, add);
 		connection.addListener(listener);
 
 		var sync = connection.sync();
@@ -80,7 +93,7 @@ public class TagSubscription {
 
 	@Bean
 	public RedisPubSubCommands<String, String> removeTag() {
-		final var client = RedisClient.create(url);
+
 		final BiFunction<Tag, Long, Mono<Tag>> remove = (tag, postId) -> {
 			Mono<Tag> mono = Mono.just(tag);
 			if (tag.getPosts().contains(postId)) {
@@ -94,8 +107,7 @@ public class TagSubscription {
 			return mono;
 		};
 
-		var listener = new Event(remove);
-		final var connection = client.connectPubSub();
+		var listener = new Event(channelTagRemove, remove);
 		connection.addListener(listener);
 
 		var sync = connection.sync();
@@ -131,14 +143,14 @@ public class TagSubscription {
 
 	public final class Event extends RedisPubSubAdapter<String, String> {
 
-		private BiFunction<Tag, Long, Mono<Tag>> function;
+		private Map<String, BiFunction<Tag, Long, Mono<Tag>>> channelFunctions = new HashMap();
 
-		private Event(BiFunction<Tag, Long, Mono<Tag>> function) {
-			this.function = function;
+		private Event(final String channel, final BiFunction<Tag, Long, Mono<Tag>> function) {
+			channelFunctions.put(channel, function);
 		}
 
 		@Override
-		public void message(String channel, String messageBody) {
+		public void message(final String channel, final String messageBody) {
 			try {
 				var message = mapper.readValue(messageBody, SubscriberMessage.class);
 				tagService.findAllById(message.getTags()).map(tag -> {
@@ -146,7 +158,7 @@ public class TagSubscription {
 						tag.addPost(message.getPostId());
 					}
 					return tag;
-				}).flatMap(tag -> function.apply(tag, message.getPostId())).subscribe();
+				}).flatMap(tag -> channelFunctions.get(channel).apply(tag, message.getPostId())).subscribe();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
