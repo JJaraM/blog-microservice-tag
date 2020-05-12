@@ -40,6 +40,14 @@ public interface TagService {
 	Mono<Tag> update(final Tag tag);
 
 	/**
+	 * Updates a tag
+	 *
+	 * @param tag to be updated
+	 * @return an asynchronous object with the tag updated
+	 */
+	Mono<Tag> remove(final Tag tag);
+
+	/**
 	 * Finds all tags
 	 * 
 	 * @return an asynchronous object with all tags found

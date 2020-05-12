@@ -28,7 +28,7 @@ public class Tag {
 	/**
 	 * List of posts
 	 */
-	private List<Long> posts;
+	private List<Long> posts = new ArrayList<>();
 
 	/**
 	 * Gets the id

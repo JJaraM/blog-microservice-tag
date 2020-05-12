@@ -41,6 +41,11 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
+	public Mono<Tag> remove(final Tag tag) {
+		return repository.findById(tag.getId()).flatMap(p -> repository.deleteById(p.getId()).thenReturn(p));
+	}
+
+	@Override
 	public Flux<Tag> findAll() {
 		return repository.findAll();
 	}

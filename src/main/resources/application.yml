@@ -9,7 +9,8 @@ spring:
       uri: ${MONGODB_URI}
     redis:
       url: ${REDIS_URL}
-      channel-tag: ${REDIS_CHANNEL_TAG}
+      channel-tag-add: ${REDIS_CHANNEL_TAG_ADD}
+      channel-tag-remove: ${REDIS_CHANNEL_TAG_REMOVE}
 
 eureka:
   instance:
