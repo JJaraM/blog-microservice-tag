@@ -8,30 +8,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.reactive.config.ResourceHandlerRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 /**
  * Web Configurations
  */
-@Configuration
-public class WebFluxConfig {
+//@Configuration
+public class WebFluxConfig implements WebFluxConfigurer {
 
-	/**
-	 * CORS configuration that we need to access this microservice operations for
-	 * external applications.
-	 * 
-	 * @return an instance of cross configuration filter
-	 */
-	@Bean
-	public CorsWebFilter corsFilter() {
-		final CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-		config.addAllowedOrigin("*");
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", config);
+		registry.addResourceHandler("/swagger-ui.html**")
+				.addResourceLocations("classpath:/META-INF/resources/");
 
-		return new CorsWebFilter(source);
+		registry.addResourceHandler("/webjars/**")
+				.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 }
