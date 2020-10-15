@@ -14,7 +14,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 /**
  * Web Configurations
  */
-//@Configuration
+@Configuration
 public class WebFluxConfig implements WebFluxConfigurer {
 
 	@Override
