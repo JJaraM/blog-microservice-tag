@@ -8,25 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import com.jjara.microservice.tag.domain.Tag;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
-import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjara.microservice.tag.service.TagService;
-
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.pubsub.RedisPubSubAdapter;
 import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import reactor.core.publisher.Mono;
-
 import javax.annotation.PostConstruct;
 
 /**
@@ -35,42 +28,13 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class TagSubscription {
 
-	/**
-	 * Tag Service Layer
-	 */
-	@Autowired
-	private TagService tagService;
 
-	/**
-	 * Class that provides the functionality to read JSON
-	 */
-	@Autowired
-	private ObjectMapper mapper;
+	@Autowired private TagService tagService;
+	@Autowired private ObjectMapper mapper;
+	@Autowired private StatefulRedisPubSubConnection<String, String> connection;
 
-	/**
-	 * URL used to connect to redis
-	 */
-	@Value("${spring.data.redis.url}")
-	private String url;
-
-	/**
-	 * Name of the channel
-	 */
-	@Value("${spring.data.redis.channel-tag-add}")
-	private String channelTagAdd;
-
-
-	@Value("${spring.data.redis.channel-tag-remove}")
-	private String channelTagRemove;
-
-	private RedisClient client;
-	private StatefulRedisPubSubConnection<String, String> connection;
-
-	@PostConstruct
-	public void init() {
-		client = RedisClient.create(url);
-		connection = client.connectPubSub();
-	}
+	@Value("${spring.data.redis.channel-tag-add}") private String channelTagAdd;
+	@Value("${spring.data.redis.channel-tag-remove}")  private String channelTagRemove;
 
 	/**
 	 * Creates the subscription for the portfolio tag and makes an update which

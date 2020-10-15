@@ -26,8 +26,10 @@ public class TagServiceImpl implements TagService {
 	private SequenceRepository sequenceRepository;
 
 	public Mono<Tag> create(final Tag tag) {
-		tag.setId(sequenceRepository.getNextSequenceId());
-		return repository.save(tag);
+		return sequenceRepository.getNextSequenceId("tag").map(sequence -> {
+			tag.setId(sequence.getSeq());
+			return tag;
+		}).flatMap(repository::save);
 	}
 
 	@Override
