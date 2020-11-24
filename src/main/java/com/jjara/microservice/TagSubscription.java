@@ -63,14 +63,15 @@ public class TagSubscription {
 	@Value("${spring.data.redis.channel-tag-remove}")
 	private String channelTagRemove;
 
-	private RedisClient client;
+	@Autowired private RedisClient client;
 	private StatefulRedisPubSubConnection<String, String> connection;
 
 	@PostConstruct
 	public void init() {
-		client = RedisClient.create(url);
 		connection = client.connectPubSub();
 	}
+
+	private Map<String, BiFunction<Tag, Long, Mono<Tag>>> channelFunctions = new HashMap();
 
 	/**
 	 * Creates the subscription for the portfolio tag and makes an update which
@@ -143,8 +144,6 @@ public class TagSubscription {
 
 	public final class Event extends RedisPubSubAdapter<String, String> {
 
-		private Map<String, BiFunction<Tag, Long, Mono<Tag>>> channelFunctions = new HashMap();
-
 		private Event(final String channel, final BiFunction<Tag, Long, Mono<Tag>> function) {
 			channelFunctions.put(channel, function);
 		}
@@ -158,7 +157,10 @@ public class TagSubscription {
 						tag.addPost(message.getPostId());
 					}
 					return tag;
-				}).flatMap(tag -> channelFunctions.get(channel).apply(tag, message.getPostId())).subscribe();
+				}).flatMap(tag -> {
+					BiFunction<Tag, Long, Mono<Tag>> mono = channelFunctions.get(channel);
+					return mono.apply(tag, message.getPostId());
+				}).subscribe();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -1,4 +1,4 @@
-package com.jjara.microservice.tag.deprecated;
+/*package com.jjara.microservice.tag.deprecated;
 
 import java.util.concurrent.Executors;
 
@@ -41,4 +41,4 @@ public class RedisConfig {
 		return new ChannelTopic("jjara:tag-channel");
 	}
 
-}
+}*/
