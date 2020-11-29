@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Jonathan Jara Morales, All rights reserved.
  */
-package com.jjara.microservice;
+package com.jjara.microservice.tag.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

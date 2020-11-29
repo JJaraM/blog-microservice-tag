@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Jonathan Jara Morales, All rights reserved.
  */
-package com.jjara.microservice;
+package com.jjara.microservice.tag.configuration;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,6 +28,7 @@ import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * Handles post subscriptions
@@ -35,43 +36,18 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class TagSubscription {
 
-	/**
-	 * Tag Service Layer
-	 */
-	@Autowired
-	private TagService tagService;
-
-	/**
-	 * Class that provides the functionality to read JSON
-	 */
-	@Autowired
-	private ObjectMapper mapper;
-
-	/**
-	 * URL used to connect to redis
-	 */
-	@Value("${spring.data.redis.url}")
-	private String url;
-
-	/**
-	 * Name of the channel
-	 */
-	@Value("${spring.data.redis.channel-tag-add}")
-	private String channelTagAdd;
-
-
-	@Value("${spring.data.redis.channel-tag-remove}")
-	private String channelTagRemove;
-
-	@Autowired private RedisClient client;
+	@Resource private TagService tagService;
+	@Resource private ObjectMapper mapper;
+	@Value("${spring.redis.channels.channel-tag-add}") private String channelTagAdd;
+	@Value("${spring.redis.channels.channel-tag-remove}") private String channelTagRemove;
+	@Resource private RedisClient client;
+	private Map<String, BiFunction<Tag, Long, Mono<Tag>>> channelFunctions = new HashMap();
 	private StatefulRedisPubSubConnection<String, String> connection;
 
 	@PostConstruct
-	public void init() {
+	void init() {
 		connection = client.connectPubSub();
 	}
-
-	private Map<String, BiFunction<Tag, Long, Mono<Tag>>> channelFunctions = new HashMap();
 
 	/**
 	 * Creates the subscription for the portfolio tag and makes an update which
@@ -81,12 +57,9 @@ public class TagSubscription {
 	 */
 	@Bean
 	public RedisPubSubCommands<String, String> addTag() {
-
 		final BiFunction<Tag, Long, Mono<Tag>> add = (tag, postId) -> tagService.update(tag);
-
 		var listener = new Event(channelTagAdd, add);
 		connection.addListener(listener);
-
 		var sync = connection.sync();
 		sync.subscribe(channelTagAdd);
 		return sync;
@@ -94,7 +67,6 @@ public class TagSubscription {
 
 	@Bean
 	public RedisPubSubCommands<String, String> removeTag() {
-
 		final BiFunction<Tag, Long, Mono<Tag>> remove = (tag, postId) -> {
 			Mono<Tag> mono = Mono.just(tag);
 			if (tag.getPosts().contains(postId)) {
