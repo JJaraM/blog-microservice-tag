@@ -18,12 +18,14 @@
 	</parent>
 
 	<properties>
+		<java.version>13</java.version>
 		<maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
 		<maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>13</java.version>
 		<io.springfox.version>3.0.0-SNAPSHOT</io.springfox.version>
+
+		<maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
 	</properties>
 
 	<dependencies>
