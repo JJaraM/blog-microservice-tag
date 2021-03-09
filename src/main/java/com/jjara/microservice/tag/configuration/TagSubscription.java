@@ -13,6 +13,9 @@ import java.util.function.Supplier;
 
 import com.jjara.microservice.tag.domain.Tag;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
+import lombok.Getter;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,19 +36,20 @@ import javax.annotation.Resource;
 /**
  * Handles post subscriptions
  */
+@Slf4j
 @Configuration
 public class TagSubscription {
 
-	@Resource private TagService tagService;
-	@Resource private ObjectMapper mapper;
 	@Value("${spring.redis.channels.channel-tag-add}") private String channelTagAdd;
 	@Value("${spring.redis.channels.channel-tag-remove}") private String channelTagRemove;
+
+	@Resource private TagService tagService;
+	@Resource private ObjectMapper mapper;
 	@Resource private RedisClient client;
 	private Map<String, BiFunction<Tag, Long, Mono<Tag>>> channelFunctions = new HashMap();
 	private StatefulRedisPubSubConnection<String, String> connection;
 
-	@PostConstruct
-	void init() {
+	@PostConstruct void init() {
 		connection = client.connectPubSub();
 	}
 
@@ -55,8 +59,7 @@ public class TagSubscription {
 	 * 
 	 * @return the subscription instance
 	 */
-	@Bean
-	public RedisPubSubCommands<String, String> addTag() {
+	@Bean public RedisPubSubCommands<String, String> addTag() {
 		final BiFunction<Tag, Long, Mono<Tag>> add = (tag, postId) -> tagService.update(tag);
 		var listener = new Event(channelTagAdd, add);
 		connection.addListener(listener);
@@ -65,8 +68,7 @@ public class TagSubscription {
 		return sync;
 	}
 
-	@Bean
-	public RedisPubSubCommands<String, String> removeTag() {
+	@Bean public RedisPubSubCommands<String, String> removeTag() {
 		final BiFunction<Tag, Long, Mono<Tag>> remove = (tag, postId) -> {
 			Mono<Tag> mono = Mono.just(tag);
 			if (tag.getPosts().contains(postId)) {
@@ -91,27 +93,10 @@ public class TagSubscription {
 	/**
 	 * Represents the information of the message that we received from the channel
 	 */
+	@Getter
 	public static final class SubscriberMessage {
-
 		protected long postId;
 		protected List<Long> tags;
-
-		public long getPostId() {
-			return postId;
-		}
-
-		public void setPostId(long postId) {
-			this.postId = postId;
-		}
-
-		public List<Long> getTags() {
-			return tags;
-		}
-
-		public void setTags(List<Long> tags) {
-			this.tags = tags;
-		}
-
 	}
 
 	public final class Event extends RedisPubSubAdapter<String, String> {
@@ -134,7 +119,7 @@ public class TagSubscription {
 					return mono.apply(tag, message.getPostId());
 				}).subscribe();
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("{}", e);
 			}
 		}
 	}

@@ -12,7 +12,7 @@ spring:
       - open-api
       - redis-${spring.profiles.active}
       - shell-${spring.profiles.active}
-      - swagger-${spring.profiles.active}
+
   cloud:
     services:
       registrationMethod: route

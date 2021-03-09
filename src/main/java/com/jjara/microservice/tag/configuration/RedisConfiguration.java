@@ -12,7 +12,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import java.time.Duration;
-import io.lettuce.core.RedisClient;
 
 @Configuration
 public class RedisConfiguration {
