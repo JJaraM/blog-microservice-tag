@@ -44,7 +44,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<io.springfox.version>3.0.0</io.springfox.version>
-
+		<junit-jupiter.version>5.5.2</junit-jupiter.version>
 		<maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
 		<jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
 		<maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
@@ -103,8 +103,14 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit-jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -138,7 +144,7 @@
 		<dependency>
 			<groupId>com.jjara.microservice</groupId>
 			<artifactId>blog-microservice-ui</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>1.4-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

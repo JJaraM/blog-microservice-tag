@@ -22,7 +22,7 @@ public class TagApplication {
 		SpringApplication.run(TagApplication.class, args);
 	}
 
-	@Bean HttpTraceRepository httpTraceRepository() {
+	@Bean public HttpTraceRepository httpTraceRepository() {
 		return new InMemoryHttpTraceRepository();
 	}
 }
