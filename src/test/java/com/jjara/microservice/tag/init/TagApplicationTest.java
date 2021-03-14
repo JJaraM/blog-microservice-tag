@@ -1,5 +1,6 @@
-package com.jjara.microservice.tag;
+package com.jjara.microservice.tag.init;
 
+import com.jjara.microservice.tag.init.TagApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;

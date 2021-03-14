@@ -51,10 +51,10 @@
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
 		<spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
+		<lettuce-core.version>5.3.3.RELEASE</lettuce-core.version>
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
@@ -66,10 +66,11 @@
 			<version>${io.springfox.version}</version>
 		</dependency>
 
+		<!-- Redis, Jedis, Lettuce for subscriptions -->
 		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
-			<version>5.0.1.RELEASE</version>
+			<version>${lettuce-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -79,6 +80,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>

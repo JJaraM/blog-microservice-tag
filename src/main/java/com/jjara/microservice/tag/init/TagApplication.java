@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Jonathan Jara Morales, All rights reserved.
  */
-package com.jjara.microservice.tag;
+package com.jjara.microservice.tag.init;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
@@ -10,10 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
-/**
- * 
- * Handles all configuration need it to start the application.
- */
 @SpringBootApplication
 @EnableDiscoveryClient
 public class TagApplication {
