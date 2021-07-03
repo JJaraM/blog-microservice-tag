@@ -1,7 +1,7 @@
 /*
  * Copyright 2018, Jonathan Jara Morales, All rights reserved.
  */
-package com.jjara.microservice.tag.init;
+package com.jjara.microservice.tag;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;

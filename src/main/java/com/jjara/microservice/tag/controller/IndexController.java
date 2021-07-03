@@ -15,6 +15,6 @@ public class IndexController {
     @Value("${page.index.metadata.repository}") private String repository;
 
     @GetMapping public ResponseEntity<String> index() {
-        return ResponseEntity.ok(getIndex(title, description, stack, repository, "swagger-ui/index.html"));
+        return ResponseEntity.ok(getIndex(title, description, stack, repository, "swagger-ui/"));
     }
 }
