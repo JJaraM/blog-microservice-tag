@@ -1,8 +1,9 @@
 server:
   forward-headers-strategy: native
-  
+
 spring:
-  application: tag-ws
+  application:
+    name: tag-ws
   profiles:
     include:
       - blog-microservice-tag
@@ -20,6 +21,8 @@ spring:
     services:
       registrationMethod: route
     config:
+      import-check:
+        enabled: false
       enabled: true
       uri: https://pr-microservice-config-server.herokuapp.com
       label: master
