@@ -1,4 +1,8 @@
+server:
+  forward-headers-strategy: native
+  
 spring:
+  application: tag-ws
   profiles:
     include:
       - blog-microservice-tag
@@ -12,7 +16,6 @@ spring:
       - open-api
       - redis-${spring.profiles.active}
       - shell-${spring.profiles.active}
-
   cloud:
     services:
       registrationMethod: route
