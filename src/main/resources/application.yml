@@ -69,20 +69,20 @@ springdoc:
 #         issuer-uri: ${AUTHORIZATION_SERVER}/auth/realms/blog
 #         jwk-set-uri: ${AUTHORIZATION_SERVER}/auth/realms/blog/protocol/openid-connect/certs
 
-eureka:
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 3600
-    lease-expiration-duration-in-seconds: 3600
-    hostname: localhost
-  client:
-    initial-instance-info-replication-interval-seconds: 3600
-    instance-info-replication-interval-seconds: 3600
-    registry-fetch-interval-seconds: 3600
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: https://blog-eureka-server.herokuapp.com/eureka/
+#eureka:
+#  instance:
+#     prefer-ip-address: true
+#     lease-renewal-interval-in-seconds: 3600
+#     lease-expiration-duration-in-seconds: 3600
+#     hostname: localhost
+#   client:
+#     initial-instance-info-replication-interval-seconds: 3600
+#     instance-info-replication-interval-seconds: 3600
+#     registry-fetch-interval-seconds: 3600
+#     registerWithEureka: true
+#     fetchRegistry: true
+#     serviceUrl:
+#       defaultZone: https://blog-eureka-server.herokuapp.com/eureka/
 
 discovery:
   uri: https://jjara-discovery.herokuapp.com/v1/discovery/
