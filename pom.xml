@@ -6,7 +6,7 @@
 	<groupId>com.jjara.microservice</groupId>
 	<artifactId>tag</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Microservice Post</name>
+	<name>Microservice Tag</name>
 	<description>Microservice used to Tag CRUD Operations</description>
 	<url>https://blog-microservice-tag.herokuapp.com</url>
 
