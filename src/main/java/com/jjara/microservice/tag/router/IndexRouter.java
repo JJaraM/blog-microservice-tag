@@ -20,7 +20,8 @@ public class IndexRouter {
                 "Tag Web Service",
                 "Tag Web Service",
                 "webflux, spring-boot, java13, mongo, redis, mockito, junit",
-                "https://github.com/JJaraM/blog-microservice-tag");
+                "https://github.com/JJaraM/blog-microservice-tag",
+                "");
         return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).bodyValue(content));
     }
 }

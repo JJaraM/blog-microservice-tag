@@ -21,10 +21,13 @@ import reactor.core.publisher.Mono;
 @Repository
 public class SequenceRepository {
 
-	@Autowired private ReactiveMongoTemplate mongoTemplate;
+	private final ReactiveMongoTemplate reactiveMongoTemplate;
+
+	public SequenceRepository(ReactiveMongoTemplate reactiveMongoTemplate) {
+		this.reactiveMongoTemplate = reactiveMongoTemplate;
+	}
 
 	public Mono<Sequence> getNextSequenceId(final String key) {
-
 		// get sequence id
 		Query query = new Query(Criteria.where("_id").is(key));
 
@@ -37,10 +40,7 @@ public class SequenceRepository {
 		options.returnNew(true);
 
 		// this is the magic happened.
-		Mono<Sequence> seqId = mongoTemplate.findAndModify(query, update, options, Sequence.class);
-
-		return seqId;
-
+		return reactiveMongoTemplate.findAndModify(query, update, options, Sequence.class, key.concat("_sequence"));
 	}
 
 }

@@ -1,0 +1,72 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.jjara.microservice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '13'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven {
+        url "https://maven.pkg.github.com/jjaram/blog-microservice-ui"
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+        }
+    }
+}
+
+ext {
+    set('springCloudVersion', "2020.0.0")
+    set('springFoxVersion', '3.0.0')
+    set('lettuceCoreVersion', '5.3.3.RELEASE')
+    set('h2Version', '1.4.200')
+    set('jupiterVersion', '5.5.2')
+    set('byteBuddyVersion', '1.10.7')
+}
+
+dependencies {
+    implementation 'com.jjara.microservice:blog-microservice-ui:1.4-SNAPSHOT'
+    implementation 'de.codecentric:spring-boot-admin-starter-client:2.2.3'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.4.5' //FIXME
+    implementation "io.springfox:springfox-boot-starter:${springFoxVersion}"
+    implementation "io.lettuce:lettuce-core:${lettuceCoreVersion}"
+    implementation "redis.clients:jedis"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
+    implementation "net.bytebuddy:byte-buddy:${byteBuddyVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-config"
+    implementation "org.springframework.cloud:spring-cloud-starter-bootstrap"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+
+    testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo"
+    testImplementation "com.h2database:h2:${h2Version}"
+    testImplementation "junit:junit"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.projectreactor:reactor-test"
+
+    compileOnly('org.projectlombok:lombok:1.18.4')
+    annotationProcessor('org.projectlombok:lombok:1.18.4')
+
+    implementation fileTree('libs')
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+//test {
+//    useJUnitPlatform()
+//}
