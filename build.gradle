@@ -30,10 +30,9 @@ ext {
 }
 
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'com.jjara.microservice:blog-microservice-ui:1.4-SNAPSHOT'
-    implementation 'de.codecentric:spring-boot-admin-starter-client:2.2.3'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.4.5' //FIXME
     implementation "io.springfox:springfox-boot-starter:${springFoxVersion}"
     implementation "io.lettuce:lettuce-core:${lettuceCoreVersion}"
