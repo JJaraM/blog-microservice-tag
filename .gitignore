@@ -32,3 +32,4 @@ target/
 
 # Docker System environments
 properties.yml
+gradle.properties

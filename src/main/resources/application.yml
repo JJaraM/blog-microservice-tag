@@ -26,7 +26,7 @@ spring:
   profiles:
     active: "dev"
   application:
-    name: blog-microservice-tag
+    name: tag-ws
   data:
     mongodb:
       uri: ${MONGODB_URI}

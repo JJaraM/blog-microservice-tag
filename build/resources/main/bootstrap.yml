@@ -17,11 +17,3 @@
   cloud:
     services:
       registrationMethod: route
-    config:
-      import-check:
-        enabled: false
-      enabled: true
-      uri: https://pr-microservice-config-server.herokuapp.com
-      label: master
-      fail-fast: true
-
