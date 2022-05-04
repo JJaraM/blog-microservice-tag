@@ -9,7 +9,6 @@ spring:
       - blog-microservice-tag
       - blog-microservice-tag-${spring.profiles.active}
       - redis-${spring.profiles.active}
-      - blog-post-microservice-${spring.profiles.active}
       - eureka-client-${spring.profiles.active}
       - log
       - management
@@ -27,4 +26,3 @@ spring:
       uri: https://pr-microservice-config-server.herokuapp.com
       label: master
       fail-fast: true
-
