@@ -2,7 +2,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jjara.microservice</groupId>
-	<artifactId>tag</artifactId>
+	<artifactId>blog-microservice-tag</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Microservice Tag</name>
@@ -29,22 +29,16 @@
 		<url>https://github.com/JJaraM/blog-microservice-post</url>
 	</scm>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.3.RELEASE</version>
-	</parent>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>14</java.version>
-		<io.springfox.version>3.0.0-SNAPSHOT</io.springfox.version>
+		<io.springfox.version>3.0.0</io.springfox.version>
 		<start-class>com.jjara.microservice.tag.TagApplication</start-class>
 		<lettuce-core.version>5.3.3.RELEASE</lettuce-core.version>
 		<byte-buddy.version>1.10.7</byte-buddy.version>
 
-		<spring-cloud-dependencies.version>Finchley.RELEASE</spring-cloud-dependencies.version>
+		<spring-cloud-dependencies.version>2020.0.2</spring-cloud-dependencies.version>
 
 		<!-- Plugin Versions -->
 		<maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
@@ -53,6 +47,13 @@
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
 	</properties>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
 
 	<distributionManagement>
 		<repository>
@@ -120,23 +121,23 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${io.springfox.version}</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>io.springfox</groupId>
-			<artifactId>springfox-spring-webflux</artifactId>
-			<version>${io.springfox.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
+			<artifactId>springfox-boot-starter</artifactId>
 			<version>${io.springfox.version}</version>
 		</dependency>
 

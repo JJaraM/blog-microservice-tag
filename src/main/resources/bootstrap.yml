@@ -20,6 +20,12 @@ spring:
     services:
       registrationMethod: route
     config:
+      server:
+        git:
+          uri: https://github.com/JJaraM/configuration-repository
+          username: jjara
+          password: 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
+          default-label: "main"
       import-check:
         enabled: false
       enabled: true
