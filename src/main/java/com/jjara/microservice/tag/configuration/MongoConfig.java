@@ -29,8 +29,12 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 @Configuration
 public class MongoConfig {
 
-    @Autowired private MongoClient mongoClient;
+    private final MongoClient mongoClient;
     @Value("${spring.data.mongodb.databaseName}") private String databaseName;
+
+    public MongoConfig(MongoClient mongoClient) {
+        this.mongoClient = mongoClient;
+    }
 
     /**
      * Gets the template that is used by spring to execute the distinct operations.

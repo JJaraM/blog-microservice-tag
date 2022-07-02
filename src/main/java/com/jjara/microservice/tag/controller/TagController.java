@@ -31,8 +31,7 @@ public class TagController {
 	/**
 	 * Tag Service instance
 	 */
-	@Autowired
-	private TagService service;
+	@Autowired private TagService service;
 
 	/**
 	 * Creates a tag
@@ -52,7 +51,7 @@ public class TagController {
 	 * Finds a list of tags according with the list of ids, this operations
 	 * retrieves the list of post that are related with the tags id.
 	 * 
-	 * @param ids
+	 * @param ids list ids to search
 	 * @return an asynchronous object that contains the list of tags with its ids.
 	 */
 	@GetMapping("/byIds")

@@ -1,0 +1,28 @@
+server:
+  forward-headers-strategy: native
+
+spring:
+  application:
+    name: tag-ws
+  profiles:
+    include:
+      - blog-microservice-tag
+      - blog-microservice-tag-${spring.profiles.active}
+      - eureka-client-${spring.profiles.active}
+      - log
+      - management
+      - mongo-${spring.profiles.active}
+      - open-api
+      - redis-${spring.profiles.active}
+      - shell-${spring.profiles.active}
+      - swagger-${spring.profiles.active}
+  cloud:
+    services:
+      registrationMethod: route
+    config:
+      import-check:
+        enabled: false
+      enabled: true
+      uri: https://pr-microservice-config-server.herokuapp.com
+      label: master
+      fail-fast: true
