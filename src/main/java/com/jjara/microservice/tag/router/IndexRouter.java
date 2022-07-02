@@ -14,14 +14,13 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @Configuration
 public class IndexRouter {
 
-    @Bean
-    public RouterFunction<ServerResponse> htmlRouter() {
+    @Bean RouterFunction<ServerResponse> htmlRouter() {
         String content = getIndex(
                 "Tag Web Service",
                 "Tag Web Service",
                 "webflux, spring-boot, java13, mongo, redis, mockito, junit",
                 "https://github.com/JJaraM/blog-microservice-tag",
-                "/swagger-ui");
+                "swagger-ui/");
         return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).bodyValue(content));
     }
 }
