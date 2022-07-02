@@ -38,7 +38,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>13</java.version>
+		<java.version>11</java.version>
 		<io.springfox.version>3.0.0-SNAPSHOT</io.springfox.version>
 		<start-class>com.jjara.microservice.tag.TagApplication</start-class>
 		<lettuce-core.version>5.3.3.RELEASE</lettuce-core.version>
