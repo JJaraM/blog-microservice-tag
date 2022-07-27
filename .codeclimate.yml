@@ -1,0 +1,50 @@
+version: "2"         # required to adjust maintainability checks
+engines:
+  sonar-java:
+    enabled: true
+    config:
+      sonar.java.source: 14
+      tests_patterns:
+        - src/test/**
+  checks:
+    squid:CommentedOutCodeLine:
+      enabled: false
+    squid:S00107:
+      enabled: false
+    argument-count:
+      config:
+        threshold: 10
+    complex-logic:
+      config:
+        threshold: 4
+    file-lines:
+      config:
+        threshold: 250
+    method-complexity:
+      config:
+        threshold: 5
+    method-count:
+      config:
+        threshold: 20
+    method-lines:
+      config:
+        threshold: 25
+    nested-control-flow:
+      config:
+        threshold: 4
+    return-statements:
+      config:
+        threshold: 2
+    similar-code:
+      config:
+        threshold: 45 # language-specific defaults. an override will affect all languages.
+    identical-code:
+      config:
+        threshold: 45 # language-specific defaults. an override will affect all languages
+exclude_patterns:
+  - build/
+  - build/
+  - fixtures/
+  - gradle/
+  - .gradle/
+  - "**/test/"

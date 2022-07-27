@@ -1,0 +1,22 @@
+language: java
+jdk:
+- openjdk14
+before_install:
+- cp .travis.settings.xml $HOME/.m2/settings.xml
+- mvn dependency:go-offline
+deploy:
+  provider: heroku
+  api_key:
+    secure: tT7eVwSUAWBFxS0GEDDEHXOIZqBps6XzgpAAxK2EsunaX9DD4j2voB0VbBAua09OVF51qvlaTyXNH7JZsEyx64876yQlkujtUkawpXVPhwlem1ycsZGnRx+yLwT2YowGAGXWZJmsc3leylXjUMz2r5ERGRXWv2TOO2IYD1dtU1zY7fh4V9HCnVX1kglLKaGH1uLbeOZTq6qtvajby0WS5LQzl/gqydzQlWpVEwK5fsxmoc6E0oQdHAN+3YYjOoIq5NM5awmgd+TaXSW47wOC7rNPDD+SSfw8flkjjpf2ptg6znqGDppnSQejjMsJMZeeS5LmljNS1CDAV/oT+fuSuyMIMWeyejpNFZYJLVMNUt2d8s9HrHEQ6cNMpung0jF5rtSkAhWs6wVybDXtpD/t1mp8Ryk7vfhyGKw8lLbRL24UqJIbhDoiQpdq0BhBgNZa9Xx6uC9dCd76Cn3ttMFTE4s1kk7zgiGzN5ne4pXEaxXU/IoxZxufkSts9+F7MT7/MYCWT+WTVeinkQ6WviMp9O/atutBRe3dHuL2p+Lwu2mmNGiJJNL0sbJZxqwQgUsv4MlZZFs6re3M01Qc7ryl4M+Z5gwYFLundknYybdquxOY2L/5+3otlVWhZQo9zcEbBVjU3nBZNTOX8AWh2exf9VOtUGJ5A4gZjs1Gh/3G++A=
+env:
+  global:
+  - CC_TEST_REPORTER_ID=6852096fff8d221e182d7b8d6a3b86d3a0266e80539b96fd8f2e970526b5c4a3
+before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
+after_script:
+- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+after_success:
+- bash <(curl -s https://codecov.io/bash)
